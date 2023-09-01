@@ -9,18 +9,20 @@
       </el-header>
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="200px">
+        <el-aside :width="iscollapse ? '64px' : '200px'">
+          <div class="left" @click="leftzd">||| </div>
           <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#303641" text-color="#fff"
-            active-text-color="rgb(52,185,255)" style="border: none;" :unique-opened="true" :router="true">
+            active-text-color="rgb(52,185,255)" style="border: none;" :unique-opened="true" :router="true"
+            :collapse="iscollapse" :collapse-transition="false">
 
-            <el-submenu :index="item.id" v-for="(item, index) in metaList" :key="item.id">
+            <el-submenu :index="'' + item.id" v-for="(item, index) in metaList" :key="item.id">
 
               <template slot="title">
                 <i :class="iconList[index]"></i>
                 <span>{{ item.authName }}</span>
               </template>
 
-              <el-menu-item :index="itemChildren.id" v-for="(itemChildren, indexChildren) in item.children"
+              <el-menu-item :index="'' + itemChildren.id" v-for="(itemChildren, indexChildren) in item.children"
                 :key="itemChildren.id" :route="{ path: `/home/${itemChildren.path}` }">
 
                 <i class="el-icon-s-unfold"></i>
@@ -28,9 +30,9 @@
 
               </el-menu-item>
             </el-submenu>
-          </el-menu></el-aside>
+          </el-menu>
+        </el-aside>
         <el-main>
-
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -46,7 +48,8 @@ export default {
   data() {
     return {
       metaList: [],
-      iconList: ['el-icon-user-solid', 'el-icon-menu', 'el-icon-s-goods', 'el-icon-s-order', 'el-icon-s-marketing']
+      iconList: ['el-icon-user-solid', 'el-icon-menu', 'el-icon-s-goods', 'el-icon-s-order', 'el-icon-s-marketing'],
+      iscollapse: false
     };
   },
   methods: {
@@ -61,6 +64,10 @@ export default {
       if (res.meta.status == 200) {
         this.metaList = res.data
       }
+    },
+    // 点击切换折叠与展开 
+    leftzd() {
+      this.iscollapse = !this.iscollapse
     }
   },
   components: {
@@ -106,34 +113,45 @@ export default {
     .el-container {
       .el-aside {
         background: #303641;
+
+        .left {
+          background-color: #475061;
+          text-align: center;
+          font-size: 12px;
+          letter-spacing: 3px;
+          line-height: 24px;
+          padding: 3px 0;
+          cursor: pointer;
+        }
       }
 
       .el-main {
         background: url('@/assets/homebj.png');
         background-size: cover;
         text-align: center;
+        color: #fff;
 
-        .logo {
-          width: 500px;
-        }
+        // .logo {
+        //   width: 500px;
+        // }
 
-        h3 {
-          margin-top: 50px;
-          letter-spacing: 10px;
-          color: #fff;
-          font-size: 50px;
+        // h3 {
+        //   margin-top: 50px;
+        //   letter-spacing: 10px;
+        //   color: #fff;
+        //   font-size: 50px;
 
-          span {
-            color: aqua;
-            font-size: 70px;
-          }
-        }
+        //   span {
+        //     color: aqua;
+        //     font-size: 70px;
+        //   }
+        // }
 
-        div {
-          margin-top: 150px;
-          font-size: 12px;
-          color: #999;
-        }
+        // div {
+        //   margin-top: 150px;
+        //   font-size: 12px;
+        //   color: #999;
+        // }
 
       }
     }

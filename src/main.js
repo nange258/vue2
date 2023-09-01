@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import css from '@/assets/css/index.css'
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
@@ -24,5 +25,6 @@ axios.interceptors.request.use(function (config) {
 new Vue({
   router,
   store,
+  css,
   render: function (h) { return h(App) }
 }).$mount('#app')
