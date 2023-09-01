@@ -2,3 +2,13 @@
     font-size: 12px;
     color: #fff !important;
 }
+
+/* html,
+body,
+#app {
+    min-width: 1400px;
+} */
+
+.cell {
+    font-size: 12px;
+}

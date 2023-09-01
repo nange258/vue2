@@ -58,7 +58,7 @@
             </div>
         </el-card>
         <!-- 添加用户 -->
-        <el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%">
+        <el-dialog title="添加用户" :visible.sync="dialogVisible" width="50%" @close="clpse">
             <!-- 主体 -->
             <el-form :model="addForm" :rules="addFormRuse" ref="addFormRef" label-width="70px">
                 <el-form-item label="用户名" prop="username">
@@ -80,7 +80,7 @@
             </span>
         </el-dialog>
         <!-- 修改用户 -->
-        <el-dialog title="修改用户" :visible.sync="useVisible" width="50%" @close="clpse">
+        <el-dialog title="修改用户" :visible.sync="useVisible" width="50%">
             <el-form :model="editFrom" :rules="editFromRules" ref="editFromRef" label-width="70px">
                 <el-form-item label="用户名">
                     <el-input v-model="editFrom.username" disabled></el-input>
@@ -266,7 +266,8 @@ export default {
         },
         // 重制表单 
         clpse() {
-            this.$refs.editFromRef.resetFields()
+            this.$refs.addFormRef.resetFields()
+            console.log(this.$refs.addFormRef.resetFields());
         },
         // 表单提交前预验证
         editUseInfo() {
@@ -301,7 +302,7 @@ export default {
             if (res.meta.status !== 200) {
                 return this.$message.info('删除用户失败')
             }
-            this.$message.success('删除  成功'),
+            this.$message.success('删除成功'),
                 this.getshuju()
         },
 
