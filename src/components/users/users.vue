@@ -43,7 +43,8 @@
                             <el-button type="danger " icon="el-icon-delete" size="mini"
                                 @click="open(scope.row.id)"></el-button>
                             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-                                <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+                                <el-button type="warning" icon="el-icon-setting" size="mini"
+                                    @click="setRow(scope.row)"></el-button>
                             </el-tooltip>
 
                         </template>
@@ -97,6 +98,23 @@
                 <el-button type="primary" @click="editUseInfo">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 分配角色对话框 -->
+        <el-dialog title="分配角色" :visible.sync="uselogVisible" width="50%" @close="setRowClosed">
+            <div class="useinof">
+                <p>当前的用户：{{ useInfo.username }}</p>
+                <p>当前的角色：{{ useInfo.role_name }}</p>
+                <p>分配新角色：
+                    <el-select v-model="rostListId" placeholder="请选择">
+                        <el-option v-for="item in rostList" :key="item.id" :label="item.roleName" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </p>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="uselogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="seaveRowInof">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template> 
 
@@ -133,10 +151,19 @@ export default {
             dialogVisible: false,
             // 修改用户显示隐藏
             useVisible: false,
+            // 分配角色对话框
+            uselogVisible: false,
+            // 需要被分配权限的角色
+            useInfo: {},
+            // 角色列表数据
+            rostList: [],
+            // 已选中的角色id值
+            rostListId: '',
             // 查询到的用户数据
             editFrom: {
                 editFromRef: {},
             },
+
             editFromRules: {
                 email: [
                     {
@@ -305,6 +332,37 @@ export default {
             this.$message.success('删除成功'),
                 this.getshuju()
         },
+        // 展示分配角色
+        async setRow(info) {
+            this.useInfo = info
+
+            const { data: res } = await this.$http.get('roles')
+            if (res.meta.status !== 200) {
+                return this.$message.error('获取角色列表失败')
+            }
+
+            this.rostList = res.data
+            this.uselogVisible = true
+        },
+        // 点击按钮  分配角色
+        async seaveRowInof() {
+            if (!this.rostListId) {
+                return this.$message.error('请选择要分配的角色')
+            }
+            const { data: res } = await this.$http.put(`users/${this.useInfo.id}/role`
+                , { rid: this.rostListId })
+            if (res.meta.status !== 200) {
+                return this.$message.error('更新角色失败')
+            }
+
+            this.$message.success('更新成功 ')
+            this.getshuju()
+            this.uselogVisible = false
+        },
+        setRowClosed() {
+            this.rostListId = '',
+                this.useInfo = {}
+        },
 
 
     },
@@ -330,6 +388,14 @@ export default {
 
 .item {
     padding: 18px 0;
+}
+
+.useinof {
+    text-align: left;
+
+    p {
+        margin-top: 5px;
+    }
 }
 
 .box-card {

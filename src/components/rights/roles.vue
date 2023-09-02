@@ -103,13 +103,13 @@
                 </span>
             </el-dialog>
             <!-- 对话框 -->
-            <el-dialog title="分配权限" :visible.sync="setRight" width="50%">
+            <el-dialog title="分配权限" :visible.sync="setRight" width="50%" @close="setRightClosed">
                 <!-- 树形图 -->
                 <el-tree :data="reghtList" :props="treeProps" show-checkbox node-key="id" :default-expand-all="true"
-                    :default-checked-keys="defKeys"></el-tree>
+                    :default-checked-keys="defKeys" ref="treeRef"></el-tree>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="setRight = false">取 消</el-button>
-                    <el-button type="primary" @click="setRight = false">确 定</el-button>
+                    <el-button type="primary" @click="allotRights">确 定</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -133,6 +133,8 @@ export default {
             setRight: false,
             // 权限
             reghtList: [],
+            // 权限id
+            roleID: '',
             // 树形图
             treeProps: {
                 label: 'authName',
@@ -196,19 +198,19 @@ export default {
                 return this.$message.error('查询用户失败')
             }
             this.rolesFrom = res.data
-            console.log(res.data);
+            // console.log(res.data);
         },
         // 表单提交前预验证
         addues() {
             this.$refs.rolesFromRef.validate(async vid => {
                 if (!vid) return
                 // 校验通过 发起请求
-                console.log(this.rolesFrom);
+                // console.log(this.rolesFrom);
                 const { data: res } = await this.$http.put('roles/' + this.rolesFrom.roleId, {
                     roleName: this.rolesFrom.roleName,
                     roleDesc: this.rolesFrom.roleDesc
                 })
-                console.log(res);
+                // console.log(res);
 
                 if (res.meta.status !== 200) {
                     return this.$message.error('更新用户信息失败')
@@ -238,7 +240,7 @@ export default {
                     roleDesc: this.pushFrom.roleDesc,
                 })
 
-                console.log(res);
+                // console.log(res);
                 if (res.meta.status != 201) {
                     this.$message.error('更新用户添加失败')
                 }
@@ -287,23 +289,44 @@ export default {
         },
         // 展示分配权限 
         async showSet(role) {
+            // console.log(role);
+            this.roleID = role.id
             const { data: res } = await this.$http.get(`rights/tree`)
             if (res.meta.status !== 200) {
                 return this.$message.info('获取权限失败')
             }
             this.reghtList = res.data
-            getLeafKey(role, this.defKeys)
+            this.getLeafKey(role, this.defKeys)
+            // console.log(2);
             this.setRight = true
         },
-        // 获取所有选中的三级权限
+        // // 获取所有选中的三级权限
         getLeafKey(node, arr) {
+            // console.log(1);
             if (!node.children) {
                 return arr.push(node.id)
             }
 
-            node.children.forEach(item =>
-                this.getLeafKey(item, arr)
-            );
+            node.children.forEach(item => this.getLeafKey(item, arr));
+        },
+        //监听对话框 
+        setRightClosed() {
+            this.defKeys = []
+        },
+        // 点击添加权限
+        async allotRights() {
+            const keys = [
+                ...this.$refs.treeRef.getCheckedKeys(),
+                ...this.$refs.treeRef.getHalfCheckedKeys(),
+            ]
+            const idStr = keys.join(',')
+            const { data: res } = await this.$http.post(`roles/${this.roleID}/rights`, { rids: idStr })
+            if (res.meta.status !== 200) {
+                return this.$message.error('分配权限失败')
+            }
+            this.$message.success('分配权限成功')
+            this.getRolesList()
+            this.setRight = false
         },
     },
     components: {
