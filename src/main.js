@@ -7,9 +7,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import css from '@/assets/css/index.css'
+import TreeTable from 'vue-table-with-tree-grid'
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+Vue.component('tree-table', TreeTable)
 axios.defaults.baseURL = 'http://www.chenfuguo.cn:8899/api/private/v1';
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么

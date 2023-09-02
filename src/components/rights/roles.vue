@@ -226,7 +226,6 @@ export default {
         },
         // // 重制表单 
         clpse() {
-
             // this.$refs.pushFromRef.resetFields()
             this.$refs.pushFromRef.resetFields()
             // console.log(2);
