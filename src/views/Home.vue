@@ -130,29 +130,6 @@ export default {
         background-size: cover;
         text-align: center;
         color: #fff;
-
-        // .logo {
-        //   width: 500px;
-        // }
-
-        // h3 {
-        //   margin-top: 50px;
-        //   letter-spacing: 10px;
-        //   color: #fff;
-        //   font-size: 50px;
-
-        //   span {
-        //     color: aqua;
-        //     font-size: 70px;
-        //   }
-        // }
-
-        // div {
-        //   margin-top: 150px;
-        //   font-size: 12px;
-        //   color: #999;
-        // }
-
       }
     }
   }
