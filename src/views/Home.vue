@@ -64,6 +64,7 @@ export default {
       if (res.meta.status == 200) {
         this.metaList = res.data
       }
+      // console.log(res);
     },
     // 点击切换折叠与展开 
     leftzd() {

@@ -37,7 +37,7 @@ const routes = [
       {
         path: 'goods',
         name: 'goods',
-        component: () => import('@/components/goods/goods.vue')
+        component: () => import('@/components/goods/goods.vue'),
       },
       {
         path: 'categories',
@@ -59,6 +59,11 @@ const routes = [
         name: 'roles',
         component: () => import('@/components/rights/roles.vue')
       },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/components/goods/add.vue')
+      }
 
     ],
     beforEnter: (to, from, next) => {
