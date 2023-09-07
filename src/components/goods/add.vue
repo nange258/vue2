@@ -246,6 +246,7 @@ export default {
                 fro.goods_cat = fro.goods_cat.join(',')
                 // 动态参数
                 this.manyTableDate.forEach(item => {
+                    // console.log(item.attr_vals);
                     let info = { attr_id: item.attr_id, attr_value: item.attr_vals }
                     this.addForm.attrs.push(info)
                 })
