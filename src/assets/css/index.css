@@ -6,3 +6,15 @@
 .cell {
     font-size: 12px;
 }
+
+.el-step__title {
+    font-size: 14px !important;
+}
+
+.is-wait {
+    font-size: 14px !important;
+}
+
+.ql-editor {
+    min-height: 350px;
+}

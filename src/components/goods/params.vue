@@ -4,7 +4,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right" style="color: #fff;">
             <el-breadcrumb-item :to="{ path: '/home/welcome' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item> 商品管理</el-breadcrumb-item>
-            <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+            <el-breadcrumb-item>参数列表</el-breadcrumb-item>
         </el-breadcrumb>
 
         <!-- 卡片视图 -->
@@ -199,7 +199,7 @@ export default {
                 return this.$message.error('获取商品分类失败')
             }
             this.caterList = res.data
-            // console.log(this.caterList);
+            // console.log(res);
         },
         // 选择框变化就会触发
         handleChange() {
@@ -220,8 +220,9 @@ export default {
                 return
             }
             // 获取参数具体数据
+            console.log(this.catId);
             const { data: res } = await this.$http.get(`categories/${this.catId}/attributes`, { params: { sel: this.activeName } })
-            // console.log(res);
+            console.log(res);
             if (res.meta.status !== 200) {
                 return this.$message.error('获取获取参数具体数据失败')
             }
