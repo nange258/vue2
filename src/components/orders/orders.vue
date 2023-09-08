@@ -3,7 +3,7 @@
         <!-- 面包屑 -->
         <el-breadcrumb separator-class="el-icon-arrow-right" style="color: #fff;">
             <el-breadcrumb-item :to="{ path: '/home/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item> 商品管理</el-breadcrumb-item>
+            <el-breadcrumb-item> 订单管理</el-breadcrumb-item>
             <el-breadcrumb-item>订单列表</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 卡片视图 -->
@@ -180,13 +180,6 @@ export default {
         },
         // 显示展示物流进度
         async showProgressBox() {
-            // let { data: res } = await this.$http.get('/kuaidi/1106975712662')
-            // if (res.meta.status !== 200) {
-            //     return this.$message.error('获取物流进度失败')
-            // }
-            // console.log(res);
-            // this.progreesInfo = res.data
-            // console.log(this.progreesInfo);
             this.dialogVisible = true
         },
     },
